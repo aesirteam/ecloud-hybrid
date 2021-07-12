@@ -1,0 +1,32 @@
+#!/bin/bash
+
+remote_path() {
+  S3_REMOTE=`rclone config dump | python -c "import json,sys;obj=json.load(sys.stdin);print obj.keys()[0].encode('utf-8')"`
+  S3_BUCKET=${S3_BUCKET:-`cat /sys/class/dmi/id/product_uuid`}
+  rclone lsd $S3_REMOTE:$S3_BUCKET > /dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    rclone mkdir $S3_REMOTE:$S3_BUCKET
+  fi
+  echo $S3_REMOTE:$S3_BUCKET
+}
+
+rclone_mount(){
+  if [ `grep "/data" /proc/mounts | wc -l` -eq 0 ]; then
+    rclone mount `remote_path` /data $MOUNT_ARGS $CACHE_ARGS
+  fi
+}
+
+if [ $1 == "ftp" ]; then
+  rclone serve ftp `remote_path` $FTP_ARGS $CACHE_ARGS 
+elif [ $1 == "webdav" ]; then
+  rclone serve webdav `remote_path` $WEBDAV_ARGS $CACHE_ARGS
+elif [ $1 == "nfs" ]; then
+  rclone_mount
+  rclone serve nfs `remote_path` $NFSD_ARGS
+elif [ $1 == "mount" ]; then
+  rclone_mount
+elif [ $1 == "web-gui" ]; then
+  rclone rcd --rc-serve $WEBGUI_ARGS
+else
+  exit 1
+fi

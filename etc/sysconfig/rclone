@@ -1,0 +1,9 @@
+S3_BUCKET=test0852
+
+CACHE_ARGS=" --vfs-cache-mode full --vfs-cache-max-age 60s --dir-cache-time 10s"
+MOUNT_ARGS=" --daemon --allow-other --uid=1000 --gid=1000"
+
+FTP_ARGS=" --addr :21 --user ftpuser --pass ftppassword"
+WEBDAV_ARGS="--addr :8080 --htpasswd /etc/htpasswd"
+WEBGUI_ARGS="--rc-addr :443 --rc-htpasswd /etc/htpasswd --rc-cert /etc/ssl/certs/rclone.crt --rc-key /etc/ssl/certs/rclone.key /usr/share/rclone"
+NFSD_ARGS="--addr :19815"

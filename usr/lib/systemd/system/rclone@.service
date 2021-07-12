@@ -1,0 +1,15 @@
+[Unit]
+Description=rclone
+Requires=network.target
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sysconfig/rclone
+ExecStart=/usr/bin/rclone_cmd %i
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target
