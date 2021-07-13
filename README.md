@@ -1,4 +1,5 @@
 # ecloud-hybrid
+### OSS
 yum install -y bridge-utils xdg-utils net-tools  httpd-tools unzip
 ```
 touch /etc/htpasswd
@@ -20,4 +21,11 @@ chgrp sambashare /data
 useradd -M -d /data -s /usr/sbin/nologin -G sambashare user1
 smbpasswd -a user1
 smbpasswd -e user1
+```
+### IPsec-Client
+yum install -y epel-release  
+yum --enablerepo=epel install -y   yum --enablerepo=epel install strongswan xl2tpd net-tools  
+```
+cat > /etc/strongswan/ipsec.conf <<EOF
+EOF
 ```
