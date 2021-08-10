@@ -10,21 +10,16 @@ remote_path() {
   echo $S3_REMOTE:$S3_BUCKET
 }
 
-rclone_mount(){
-  if [ `grep "/data" /proc/mounts | wc -l` -eq 0 ]; then
-    rclone mount `remote_path` /data $MOUNT_ARGS $CACHE_ARGS
-  fi
-}
-
 if [ $1 == "ftp" ]; then
   rclone serve ftp `remote_path` $FTP_ARGS $CACHE_ARGS 
 elif [ $1 == "webdav" ]; then
   rclone serve webdav `remote_path` $WEBDAV_ARGS $CACHE_ARGS
 elif [ $1 == "nfs" ]; then
-  rclone_mount
   rclone serve nfs `remote_path` $NFSD_ARGS
 elif [ $1 == "mount" ]; then
-  rclone_mount
+  if [ `grep $MOUNT_POINT /proc/mounts | wc -l` -eq 0 ]; then
+    rclone mount `remote_path` $MOUNT_POINT $MOUNT_ARGS $CACHE_ARGS
+  fi
 elif [ $1 == "web-gui" ]; then
   rclone rcd --rc-serve $WEBGUI_ARGS
 else

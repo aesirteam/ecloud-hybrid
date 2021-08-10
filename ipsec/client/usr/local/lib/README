@@ -1,0 +1,2 @@
+ln -sf /usr/local/lib/libsqlite3.so.0.8.6 /usr/local/lib/libsqlite3.so
+ln -sf /usr/local/lib/libsqlite3.so.0.8.6 /usr/local/lib/libsqlite3.so.0

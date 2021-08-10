@@ -1,0 +1,13 @@
+[Unit]
+Description=rclone mount
+Requires=network.target
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sysconfig/rclone
+ExecStart=/usr/bin/rclone_cmd mount
+ExecStop=/usr/bin/fusermount -uz $MOUNT_POINT
+
+[Install]
+WantedBy=multi-user.target
